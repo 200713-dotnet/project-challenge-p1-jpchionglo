@@ -1,0 +1,52 @@
+@model PizzaBox.Client.Models.UserViewModel
+
+<p>Welcome, @Model.User.Name!</p>
+
+<a href="/order/edit">Create Order</a>
+<br>
+<br>
+<br>
+
+@{
+  int price = 0;
+  int totalprice = 0;
+}
+
+</ul>
+<p>Past Orders:</p>
+<ul>
+  @foreach (var order in @Model.Orders){
+    price = 0;
+    totalprice = 0;
+    @if (order.Placed){
+      <li>Order Number #@order.Id</li>
+      <ul>
+        <li>Order Date: @order.dateOrdered</li>
+        <li>Store: @order.Store.Name</li>
+        <li>Pizzas: </li>
+        <ul>
+          @foreach (var pizza in order.Pizzas){
+            price = pizza.Crust.Price + pizza.Size.Price;
+            <li>@pizza.Name</li>
+            <ul>
+              <li>Crust: @pizza.Crust.Name</li>
+              <li>Size: @pizza.Size.Name</li>
+              <li>Toppings: </li>
+              <ul>
+                @foreach (var topping in pizza.Toppings){
+
+                  <li>@topping.Name</li>
+                  price += topping.Price;
+                }
+              </ul>
+              <li>Price: $@price</li>
+            </ul>
+            totalprice += price;
+          }
+        </ul>
+        <li>Total Price: $@totalprice</li>
+      </ul>
+    }
+
+  }
+</ul>

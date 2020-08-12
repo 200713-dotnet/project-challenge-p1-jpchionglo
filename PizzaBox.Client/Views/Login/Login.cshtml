@@ -1,0 +1,25 @@
+@model PizzaBox.Client.Models.LoginViewModel
+
+
+<form asp-action="post" method="post">
+
+  @Html.AntiForgeryToken()
+
+  <label for="username">Username</label><br>
+  <input type = "text" name = "username" id = "username" asp-for="@Model.Username"><br>
+  
+  <label for="password">Password</label><br>
+  <input type = "password" name = "password" id = "password" asp-for="@Model.Password"><br>
+  
+  <input type="submit" value="Submit">
+
+</form>
+
+
+@* @using(Html.BeginForm("Blank","Login", null, FormMethod.Post)){
+
+  @Html.AntiForgeryToken();
+
+  @Html.LabelFor(m => m.)
+
+} *@

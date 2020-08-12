@@ -1,0 +1,175 @@
+@model PizzaBox.Client.Models.CartViewModel
+
+<h4>Current Pizzas for @Model.User.Name</h4>
+
+@{
+  int pcount = 0;
+  int price = 0;
+  int totalprice = 0;
+}
+
+<ul>
+  
+    @foreach (var pizza in @Model.Cart.Pizzas){
+      price = pizza.Crust.Price + pizza.Size.Price;
+      <li>Pizza #@pcount (@pizza.Name)</li>
+      <ul>
+        <li>Crust: @pizza.Crust.Name</li>
+        <li>Size: @pizza.Size.Name</li>
+        <li>Toppings: </li>
+        <ul>
+          @foreach (var topping in pizza.Toppings){
+
+            <li>@topping.Name</li>
+            price += topping.Price;
+          }
+        </ul>
+        <li>Price: $@price</li>
+      </ul>
+      totalprice += price;
+      pcount += 1;
+
+    }
+
+    <li>Total Price: $@totalprice</li>
+
+</ul>
+
+<h5>Remove Pizza</h5>
+
+<form asp-action="removepizza" method = "post">
+
+  @Html.AntiForgeryToken()
+
+  <p>Enter Pizza Number to Remove</p>
+  <input type="text" name = "pizzanumber" id = "pizzanumber" asp-for="@Model.PizzaNumber">
+  <button type="submit">Remove Pizza</button>
+
+</form>
+
+<br>
+
+<h5>Edit Pizza</h5>
+<form asp-action="editpizza" method="post">
+
+  @Html.AntiForgeryToken()
+  
+  <p>Enter Pizza Number to Edit</p>
+  <input type="text" name = "pizzanumber" id = "pizzanumber" asp-for="@Model.PizzaNumber">
+  <br>
+  <br>
+
+  <p>Crust</p>
+  @Html.DropDownListFor(m => m.Crust, new SelectList(Model.Crusts))
+
+  <br>
+  <br>
+  <p>Size</p>
+  @Html.DropDownListFor(m => m.Size, new SelectList(Model.Sizes))
+
+  <br>
+  <br>
+
+  @* @for (int i = 0; i < Model.Toppings2.Count; i++){
+
+    @Html.CheckBoxFor(m => Model.SelectedToppings2[i].isSelected, new {name = "selectedtoppings2", value = Model.Toppings2[i].Text});
+    @Model.Toppings2[i].Text
+    <br>
+    @Html.HiddenFor(m => m.SelectedToppings2);
+
+  } *@
+
+  <label for="selectedtoppings3">Toppings</label><br>
+  <input type = "text" name = "selectedtoppings3" id = "selectedtoppings3" asp-for="@Model.SelectedToppings3">
+  <br>
+  <p>Please enter toppings in this format: Pineapple Ham Bacon</p>
+  <p>Available Toppings:</p>
+  <ul>
+    @foreach (var topping in Model.Toppings){
+
+      <li>@topping</li>
+
+    }
+  </ul>
+  <br>
+
+  <button type="submit">Update Pizza</button>
+
+</form>
+
+<br>
+<br>
+
+<h5>Choose Specialty Pizza</h5>
+<form asp-action="addspecialpizza" method="post">
+
+  @Html.AntiForgeryToken()
+
+  <p>Pizzas</p>
+  @Html.DropDownListFor(m => m.SpecialtyPizza, new SelectList(Model.SpecialtyPizzas))
+
+  <button type="submit">Add To Order</button>
+
+</form>
+
+<br>
+<br>
+
+<h5>Create Custom Pizza</h5>
+<form asp-action="placeorder" method="post">
+
+  @Html.AntiForgeryToken()
+  
+  <p>Crust</p>
+  @Html.DropDownListFor(m => m.Crust, new SelectList(Model.Crusts))
+
+  <br>
+  <br>
+  <p>Size</p>
+  @Html.DropDownListFor(m => m.Size, new SelectList(Model.Sizes))
+
+  <br>
+  <br>
+
+  @* @for (int i = 0; i < Model.Toppings2.Count; i++){
+
+    @Html.CheckBoxFor(m => Model.SelectedToppings2[i].isSelected, new {name = "selectedtoppings2", value = Model.Toppings2[i].Text});
+    @Model.Toppings2[i].Text
+    <br>
+    @Html.HiddenFor(m => m.SelectedToppings2);
+
+  } *@
+
+  <label for="selectedtoppings3">Toppings</label><br>
+  <input type = "text" name = "selectedtoppings3" id = "selectedtoppings3" asp-for="@Model.SelectedToppings3">
+  <br>
+  <p>Please enter toppings in this format: Pineapple Ham Bacon</p>
+  <p>Available Toppings:</p>
+  <ul>
+    @foreach (var topping in Model.Toppings){
+
+      <li>@topping</li>
+
+    }
+  </ul>
+  <br>
+
+  <button type="submit">Add To Order</button>
+
+</form>
+
+<br>
+<br>
+
+<h5>Place Order</h5>
+
+<form asp-action="placeorder2" method="post">
+
+  @Html.AntiForgeryToken()
+
+  Store 
+  @Html.DropDownListFor(m => m.StoreString, new SelectList(Model.Stores))
+
+  <button type="submit">Place Order</button>
+
+</form>
